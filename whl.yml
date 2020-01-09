@@ -1,0 +1,10 @@
+repos:
+  - name: "nrjais/mac-setup"
+    dir: /tmp
+    cmd: "ls"
+
+  - name: "nrjais/blog"
+    dir: /tmp
+    cmd:
+      - "ls -al"
+      - "cd"
