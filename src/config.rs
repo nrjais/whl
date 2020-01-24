@@ -2,21 +2,21 @@ use serde::Deserialize;
 
 #[derive(Deserialize, Debug)]
 #[serde(untagged)]
-enum Command {
+pub enum Command {
   Bin(String),
   Script(Vec<String>),
 }
 
 #[derive(Deserialize, Debug)]
-struct RepoConfig {
-  name: String,
-  dir:  String,
-  cmd:  Command,
+pub struct RepoConfig {
+  pub name: String,
+  pub dir:  String,
+  pub cmd:  Command,
 }
 
 #[derive(Deserialize, Debug)]
 pub struct AppConfig {
-  repos: Vec<RepoConfig>,
+  pub repos: Vec<RepoConfig>,
 }
 
 impl AppConfig {

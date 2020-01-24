@@ -1,10 +1,4 @@
 repos:
-  - name: "nrjais/mac-setup"
+  - name: nrjais/whl
     dir: /tmp
-    cmd: "ls"
-
-  - name: "nrjais/blog"
-    dir: /tmp
-    cmd:
-      - "ls -al"
-      - "cd"
+    cmd: ls -al
