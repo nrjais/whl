@@ -13,7 +13,7 @@ async fn main() -> std::io::Result<()> {
 
   let app = move || App::new().app_data(config.clone()).service(github_push);
 
-  let interface = "127.0.0.1:8080";
+  let interface = "0.0.0.0:8080";
   println!("Listening on interface: {}", interface);
   HttpServer::new(app).bind(interface)?.run().await?;
   Ok(())
