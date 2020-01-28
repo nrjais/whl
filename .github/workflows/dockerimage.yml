@@ -6,10 +6,38 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: Login to DockerHub Registry
-      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-    - name: Build the Docker image
-      run: docker build . --tag nrjais/whl:$(date +%s)
-    - name: Push image
-      run: docker push nrjais/whl:$(date +%s)
+      - uses: actions/checkout@v1
+
+      - name: Cache cargo registry
+        uses: actions/cache@v1
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache cargo index
+        uses: actions/cache@v1
+        with:
+          path: ~/.cargo/git
+          key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache cargo build
+        uses: actions/cache@v1
+        with:
+          path: target
+          key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Build
+        run: |
+          apt-get -y install ca-certificates cmake musl-tools libssl-dev
+          rm -rf /var/lib/apt/lists/*
+          rustup target add x86_64-unknown-linux-musl
+          PKG_CONFIG_ALLOW_CROSS=1 cargo build --target x86_64-unknown-linux-musl --release
+
+      - name: Login to DockerHub Registry
+        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+      - name: Build and Push the Docker image
+        run: |
+        VERSION=$(date +%s)
+        docker build . --file .github/Dockerfile --tag nrjais/whl:$VERSION
+        docker push nrjais/whl:$VERSION
