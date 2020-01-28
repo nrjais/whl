@@ -45,10 +45,6 @@ jobs:
 
       - name: Build and Push the Docker image
         run: |
-          ls -al
-          ls -al target
-          ls -al target/x86_64-unknown-linux-musl
-          ls -al target/x86_64-unknown-linux-musl/release
           VERSION=$(date +%s)
           docker build . --file .github/Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/whl:$VERSION
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/whl:$VERSION
