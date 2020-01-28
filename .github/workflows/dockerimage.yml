@@ -10,6 +10,6 @@ jobs:
     - name: Login to DockerHub Registry
       run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
     - name: Build the Docker image
-      run: docker build . --tag nrjais.whl:$(date +%s)
+      run: docker build . --tag nrjais/whl:$(date +%s)
     - name: Push image
       run: docker push nrjais/whl:$(date +%s)
