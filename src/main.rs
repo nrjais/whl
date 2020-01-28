@@ -1,4 +1,5 @@
 use actix_web::*;
+use std::env::var;
 use whl::config::AppConfig;
 use whl::executor::Executor;
 use whl::github_push;
@@ -13,7 +14,7 @@ async fn main() -> std::io::Result<()> {
 
   let app = move || App::new().app_data(config.clone()).service(github_push);
 
-  let interface = "0.0.0.0:8080";
+  let interface = format!("0.0.0.0:{}", var("POST").unwrap_or("8080".into()));
   println!("Listening on interface: {}", interface);
   HttpServer::new(app).bind(interface)?.run().await?;
   Ok(())
