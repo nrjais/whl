@@ -1,17 +1,10 @@
 use serde::Deserialize;
 
 #[derive(Deserialize, Debug)]
-#[serde(untagged)]
-pub enum Command {
-  Bin(String),
-  Script(Vec<String>),
-}
-
-#[derive(Deserialize, Debug)]
 pub struct RepoConfig {
   pub name: String,
   pub dir:  Option<String>,
-  pub cmd:  Command,
+  pub cmd:  String,
 }
 
 #[derive(Deserialize, Debug)]
