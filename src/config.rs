@@ -10,7 +10,7 @@ pub enum Command {
 #[derive(Deserialize, Debug)]
 pub struct RepoConfig {
   pub name: String,
-  pub dir:  String,
+  pub dir:  Option<String>,
   pub cmd:  Command,
 }
 

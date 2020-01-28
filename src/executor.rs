@@ -9,7 +9,7 @@ impl Executor {
     Executor
   }
 
-  pub fn execute(&self, cmd: &Command, dir: &str) -> Result<ExitStatus> {
+  pub fn execute(&self, cmd: &Command, dir: &Option<String>) -> Result<ExitStatus> {
     match cmd {
       Command::Bin(c) => Self::spawn(c, dir),
       //TODO: Handle script execution
@@ -17,14 +17,13 @@ impl Executor {
     }
   }
 
-  fn spawn(c: &String, dir: &str) -> Result<ExitStatus> {
-    let mut iterator = c.split(" ").filter(|s| !s.is_empty());
-    let mut cmd = StdCommand::new(iterator.next().unwrap());
-    cmd.current_dir(dir);
-    for p in iterator {
-      cmd.arg(p);
+  fn spawn(c: &String, dir: &Option<String>) -> Result<ExitStatus> {
+    let mut cmd = StdCommand::new("bash");
+
+    if let Some(dir) = dir {
+      cmd.current_dir(dir);
     }
 
-    Ok(cmd.spawn()?.wait()?)
+    Ok(cmd.arg("-c").arg(c).spawn()?.wait()?)
   }
 }
