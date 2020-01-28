@@ -37,23 +37,18 @@ jobs:
           target: x86_64-unknown-linux-musl
           override: true
 
-      - uses: actions-rs/cargo@v1
-        with:
-          use-cross: true
-          command: build
-          args: --release --target=x86_64-unknown-linux-musl
-
-      - name: show build details
-        run: |
-          ls -al
-          ls -al target
-          ls -al target x86_64-unknown-linux-musl
+      - uses: Build binary
+        run: PKG_CONFIG_ALLOW_CROSS=1 cargo build --release --target=x86_64-unknown-linux-musl
 
       - name: Login to DockerHub Registry
         run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
       - name: Build and Push the Docker image
         run: |
+          ls -al
+          ls -al target
+          ls -al target/x86_64-unknown-linux-musl
+          ls -al target/x86_64-unknown-linux-musl/release
           VERSION=$(date +%s)
           docker build . --file .github/Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/whl:$VERSION
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/whl:$VERSION
