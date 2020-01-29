@@ -2,9 +2,11 @@ use serde::Deserialize;
 
 #[derive(Deserialize, Debug)]
 pub struct RepoConfig {
-  pub name: String,
-  pub dir:  Option<String>,
-  pub cmd:  String,
+  pub name:   String,
+  pub dir:    Option<String>,
+  pub cmd:    String,
+  #[serde(rename = "ref")]
+  pub branch: String,
 }
 
 #[derive(Deserialize, Debug)]

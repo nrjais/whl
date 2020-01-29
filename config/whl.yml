@@ -1,4 +1,5 @@
 repos:
   - name: nrjais/whl
+    ref: refs/heads/master
     dir: /tmp
     cmd: ls -al

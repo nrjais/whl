@@ -28,6 +28,8 @@ struct Repository {
 
 #[derive(Deserialize, Debug)]
 pub struct PushBody {
+  #[serde(rename = "ref")]
+  branch:     String,
   repository: Repository,
 }
 
@@ -35,7 +37,9 @@ pub struct PushBody {
 pub fn github_push(body: web::Json<PushBody>, state: web::Data<AppState>) -> HttpResponse {
   let conf = state.config.repos.iter().find(|c| c.name == body.repository.full_name);
   if let Some(conf) = conf {
-    state.executor.execute(&conf.cmd, &conf.dir).unwrap();
+    if conf.branch == body.branch {
+      state.executor.execute(&conf.cmd, &conf.dir).unwrap();
+    }
     HttpResponse::Ok().finish()
   } else {
     HttpResponse::NotFound().json(serde_json::json!({
