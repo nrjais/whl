@@ -1,0 +1,8 @@
+Auto configure github based on configuration with the given token
+Add authentication mechanish based on signature for github
+Add support for gitlab and bitbucket
+Rename cmd to run
+Fix docker release versioning
+Maybe add scripting using lua
+Add way to define custom routes to get webhooks
+Maybe have optional choice to invoke another endpoint instead to cmd(curl can be used instead)

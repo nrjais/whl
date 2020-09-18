@@ -1,5 +1,8 @@
-repos:
-  - name: nrjais/whl
-    ref: refs/heads/master
-    dir: /tmp
-    cmd: ls -al
+github:
+  token:
+  base_url: https://whl.nrjais.com
+  repos:
+    - name: nrjais/whl
+      ref: refs/heads/master
+      dir: /tmp
+      cmd: ls -al

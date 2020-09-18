@@ -1,6 +1,8 @@
 pub mod config;
 pub mod error;
 pub mod executor;
+pub mod http_client;
+pub mod configure;
 
 use actix_web::*;
 use config::AppConfig;
@@ -35,7 +37,13 @@ pub struct PushBody {
 
 #[post("/github")]
 pub fn github_push(body: web::Json<PushBody>, state: web::Data<AppState>) -> HttpResponse {
-  let conf = state.config.repos.iter().find(|c| c.name == body.repository.full_name);
+  let conf = state
+    .config
+    .github
+    .repos
+    .iter()
+    .find(|c| c.name == body.repository.full_name);
+
   if let Some(conf) = conf {
     if conf.branch == body.branch {
       state.executor.execute(&conf.cmd, &conf.dir).unwrap();

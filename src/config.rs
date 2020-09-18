@@ -2,16 +2,23 @@ use serde::Deserialize;
 
 #[derive(Deserialize, Debug)]
 pub struct RepoConfig {
-  pub name:   String,
-  pub dir:    Option<String>,
-  pub cmd:    String,
+  pub name: String,
+  pub dir: Option<String>,
+  pub cmd: String,
   #[serde(rename = "ref")]
   pub branch: String,
 }
 
 #[derive(Deserialize, Debug)]
-pub struct AppConfig {
+pub struct GithubConfig {
+  pub token: String,
+  pub base_url: String,
   pub repos: Vec<RepoConfig>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct AppConfig {
+  pub github: GithubConfig,
 }
 
 impl AppConfig {
